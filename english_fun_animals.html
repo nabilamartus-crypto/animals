@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Fun Kids: Animals (Kelas 1 SD)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Fredoka & Nunito for vibrant kid UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kid: {
+                            green: '#4ADE80',
+                            lime: '#A3E635',
+                            yellow: '#FACC15',
+                            orange: '#FB923C',
+                            pink: '#F472B6',
+                            purple: '#C084FC',
+                            sky: '#38BDF8',
+                            bg: '#FEFCE8'
+                        }
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        nunito: ['Nunito', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #FEF9C3 0%, #E0F2FE 50%, #FCE7F3 100%);
+            min-height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .heading-font {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .bounce-btn {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+        }
+        .bounce-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+        .bounce-btn:active {
+            transform: translateY(2px) scale(0.98);
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: floatSlow 3s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .shake-animation {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(250, 204, 21, 0.6); }
+            50% { box-shadow: 0 0 25px rgba(250, 204, 21, 0.9); }
+        }
+        .glow-card {
+            animation: pulse-glow 2s infinite;
+        }
+
+        /* Canvas for celebratory confetti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-certificate, #printable-certificate * {
+                visibility: visible;
+            }
+            #printable-certificate {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col justify-between min-h-screen p-3 md:p-6 relative">
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Top App Navigation Header -->
+    <header class="max-w-4xl mx-auto w-full mb-4 flex justify-between items-center bg-white/90 backdrop-blur-md rounded-3xl p-3 md:p-4 shadow-sm border-2 border-white">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="goHome()">
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-tr from-emerald-400 via-amber-400 to-pink-400 flex items-center justify-center text-white text-2xl md:text-3xl shadow-md transform -rotate-3 hover:rotate-6 transition">
+                🦁
+            </div>
+            <div>
+                <h1 class="heading-font text-xl md:text-2xl font-bold text-slate-800 leading-tight">Fun Animals Game v2.0</h1>
+                <p class="text-xs md:text-sm text-emerald-600 font-extrabold">Kelas 1 SD • Fun & Audio Vocabulary</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button onclick="openFlashcardModal()" class="px-3.5 py-2.5 bg-amber-100 hover:bg-amber-200 text-amber-800 text-xs md:text-sm rounded-2xl font-extrabold transition flex items-center gap-2 border border-amber-300 shadow-xs">
+                <i class="fa-solid fa-book-open text-amber-600 text-base"></i>
+                <span class="hidden sm:inline">Mode Belajar</span>
+            </button>
+            <button onclick="toggleSound()" id="btn-sound-toggle" class="w-11 h-11 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-2xl flex items-center justify-center transition font-bold shadow-xs">
+                <i class="fa-solid fa-volume-high text-lg" id="sound-icon"></i>
+            </button>
+            <button onclick="promptTeacherPin()" class="px-3.5 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs md:text-sm rounded-2xl font-bold transition flex items-center gap-2 border border-indigo-200 shadow-xs">
+                <i class="fa-solid fa-user-shield text-indigo-600 text-base"></i>
+                <span class="hidden sm:inline">Portal Guru</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto w-full flex-grow flex flex-col justify-center my-2">
+
+        <!-- SCREEN: REGISTER -->
+        <div id="screen-register" class="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border-4 border-amber-200 max-w-lg mx-auto w-full text-center">
+            <div class="w-24 h-24 bg-amber-100 text-5xl rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-inner transform rotate-3 animate-float">
+                🦁
+            </div>
+            <h2 class="heading-font text-3xl font-bold text-slate-800 mb-1">Halo Teman Kecil!</h2>
+            <p class="text-slate-600 text-sm mb-5 font-bold">Tulis namamu dan pilih kelas sebelum memulai petualangan hewan!</p>
+
+            <!-- Mode Selection Options -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <button onclick="openFlashcardModal()" class="p-3 bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 rounded-2xl text-amber-900 font-extrabold text-xs flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-graduation-cap text-lg text-amber-600"></i>
+                    <span>Mode Belajar Dulu</span>
+                </button>
+                <div class="p-3 bg-emerald-50 border-2 border-emerald-300 rounded-2xl text-emerald-900 font-extrabold text-xs flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-gamepad text-lg text-emerald-600"></i>
+                    <span>Tantangan Game</span>
+                </div>
+            </div>
+
+            <form id="form-identity" onsubmit="startGame(event)" class="space-y-5 text-left">
+                <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">Nama Lengkap Siswa</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-child-reaching absolute left-4 top-1/2 -translate-y-1/2 text-amber-500 text-xl"></i>
+                        <input type="text" id="input-student-name" required placeholder="Ketik namamu di sini..." 
+                            class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-2 border-slate-200 focus:border-amber-400 focus:outline-none transition font-extrabold text-slate-800 text-lg bg-slate-50">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">Pilih Kelas</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="student_class" value="1A" checked class="peer hidden">
+                            <div class="p-4 text-center rounded-2xl border-2 border-slate-200 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 font-extrabold transition hover:border-slate-300 flex items-center justify-center gap-2 text-lg shadow-2xs">
+                                <i class="fa-solid fa-school text-emerald-500"></i> Kelas 1A
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="student_class" value="1B" class="peer hidden">
+                            <div class="p-4 text-center rounded-2xl border-2 border-slate-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 peer-checked:text-purple-700 font-extrabold transition hover:border-slate-300 flex items-center justify-center gap-2 text-lg shadow-2xs">
+                                <i class="fa-solid fa-school text-purple-500"></i> Kelas 1B
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-emerald-400 via-amber-400 to-orange-400 hover:opacity-95 text-white heading-font text-xl rounded-2xl shadow-lg shadow-orange-200 transition bounce-btn flex items-center justify-center gap-3 cursor-pointer border-b-4 border-orange-500">
+                    <i class="fa-solid fa-play text-2xl"></i> Mulai Main Petualangan!
+                </button>
+            </form>
+        </div>
+
+        <!-- SCREEN: PART 1 MATCHING -->
+        <div id="screen-matching" class="hidden bg-white/95 backdrop-blur-md rounded-3xl p-4 md:p-8 shadow-xl border-4 border-emerald-200">
+            <!-- Header -->
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-4 border-b-2 border-slate-100">
+                <div>
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-extrabold text-xs rounded-full uppercase tracking-wider">Bagian 1 dari 3</span>
+                    <h2 class="heading-font text-2xl md:text-3xl font-bold text-slate-800 mt-1">Mencocokkan Kata & Gambar</h2>
+                </div>
+                <div class="bg-amber-100 border border-amber-300 rounded-2xl px-4 py-2 flex items-center gap-2 shadow-2xs">
+                    <i class="fa-solid fa-star text-amber-500 text-2xl"></i>
+                    <div>
+                        <div class="text-[10px] text-amber-800 font-extrabold uppercase">Skor Part 1</div>
+                        <div class="heading-font text-xl font-bold text-amber-700" id="match-score-text">0 / 25</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instruction Box -->
+            <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 md:p-4 mb-6 flex items-center justify-between gap-3 text-xs md:text-sm font-bold text-amber-900">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-hand-pointer text-amber-500 text-2xl shrink-0"></i>
+                    <span><strong>Cara Bermain:</strong> Klik Kata Bahasa Inggris, dengarkan suaranya, lalu klik Gambar Hewan yang cocok!</span>
+                </div>
+                <button onclick="speakText('Match the word with the correct animal picture!')" class="p-2 bg-amber-200 rounded-xl hover:bg-amber-300 transition text-amber-900 shrink-0">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Column 1: English Word Buttons -->
+                <div>
+                    <h3 class="heading-font text-base font-extrabold text-slate-700 mb-3 flex items-center justify-between">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-font text-sky-500"></i> Kata Bahasa Inggris:</span>
+                        <span class="text-xs text-slate-400">(Klik tombol 🔊)</span>
+                    </h3>
+                    <div id="words-container" class="space-y-3">
+                        <!-- Dynamic Word Buttons -->
+                    </div>
+                </div>
+
+                <!-- Column 2: Animal Picture Cards -->
+                <div>
+                    <h3 class="heading-font text-base font-extrabold text-slate-700 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-image text-emerald-500"></i> Pilih Gambar Hewan:
+                    </h3>
+                    <div id="pictures-container" class="grid grid-cols-2 gap-3">
+                        <!-- Dynamic Picture Buttons -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part 1 Footer Action -->
+            <div class="mt-8 flex flex-col sm:flex-row justify-between items-center gap-3 border-t-2 border-slate-100 pt-4">
+                <div class="text-xs font-bold text-slate-500" id="match-status-text">
+                    Cocokkan ke-7 hewan untuk membuka Bagian 2!
+                </div>
+                <button id="btn-next-to-part2" onclick="startPart2Quiz()" disabled class="w-full sm:w-auto px-6 py-3 bg-slate-200 text-slate-400 font-extrabold text-sm rounded-2xl transition cursor-not-allowed flex items-center justify-center gap-2">
+                    <span>Lanjut ke Bagian 2 (Spelling)</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN: PART 2 SPELLING QUIZ -->
+        <div id="screen-quiz" class="hidden bg-white/95 backdrop-blur-md rounded-3xl p-4 md:p-8 shadow-xl border-4 border-purple-200">
+            <!-- Quiz Header -->
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-4 border-b-2 border-slate-100">
+                <div>
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 font-extrabold text-xs rounded-full uppercase tracking-wider">Bagian 2 dari 3</span>
+                    <h2 class="heading-font text-2xl md:text-3xl font-bold text-slate-800 mt-1">Latihan Melengkapi Huruf Kosong</h2>
+                </div>
+                <div class="bg-purple-100 border border-purple-300 rounded-2xl px-4 py-2 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-purple-600 text-xl"></i>
+                    <span class="heading-font font-bold text-purple-900 text-base" id="quiz-question-number">Soal 1 / 10</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden mb-6 border border-slate-200">
+                <div id="quiz-progress-bar" class="bg-gradient-to-r from-purple-400 via-pink-400 to-amber-400 h-full transition-all duration-300" style="width: 10%;"></div>
+            </div>
+
+            <div class="bg-gradient-to-b from-purple-50 to-pink-50 border-2 border-purple-200 rounded-3xl p-6 mb-6 text-center shadow-inner relative">
+                <button onclick="speakAnimalWord()" class="absolute top-4 right-4 w-10 h-10 bg-purple-200 hover:bg-purple-300 text-purple-800 rounded-2xl flex items-center justify-center transition shadow-xs">
+                    <i class="fa-solid fa-volume-high text-lg"></i>
+                </button>
+                <p class="text-xs font-extrabold text-purple-600 uppercase tracking-widest mb-3">Lengkapi Kata Berdasarkan Gambar Hewan Ini:</p>
+
+                <!-- Animal Visual Badge -->
+                <div id="quiz-animal-card" class="w-28 h-28 bg-white border-4 border-purple-300 rounded-3xl flex items-center justify-center mx-auto mb-4 text-6xl shadow-md transform hover:scale-105 transition">
+                    <!-- Dynamic Emoji -->
+                </div>
+
+                <div class="heading-font text-3xl md:text-5xl font-extrabold tracking-widest text-slate-800 my-2" id="quiz-word-display">
+                    CH_CKEN
+                </div>
+                <p class="text-xs font-bold text-slate-500 mt-1" id="quiz-hint-text">Pilih satu huruf yang tepat untuk mengisi tanda garis bawah (_)</p>
+            </div>
+
+            <div id="quiz-options-container" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                <!-- Option Buttons populated dynamically -->
+            </div>
+
+            <!-- Feedback Box -->
+            <div id="quiz-feedback-box" class="hidden p-4 rounded-2xl mb-6 text-center font-extrabold text-sm border-2"></div>
+
+            <!-- Navigation Controls -->
+            <div class="flex justify-between items-center pt-4 border-t-2 border-slate-100">
+                <button id="btn-prev-question" onclick="navigateQuiz(-1)" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-extrabold text-sm rounded-2xl transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-chevron-left"></i> Sebelum
+                </button>
+                <button id="btn-next-question" onclick="navigateQuiz(1)" class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-95 text-white heading-font text-base rounded-2xl shadow-md transition flex items-center gap-2 cursor-pointer border-b-4 border-purple-700">
+                    <span>Lanjut ke Listening</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN: PART 3 LISTENING QUIZ (NEW FITUR!) -->
+        <div id="screen-listening" class="hidden bg-white/95 backdrop-blur-md rounded-3xl p-4 md:p-8 shadow-xl border-4 border-sky-200">
+            <!-- Listening Header -->
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-4 border-b-2 border-slate-100">
+                <div>
+                    <span class="px-3 py-1 bg-sky-100 text-sky-800 font-extrabold text-xs rounded-full uppercase tracking-wider">Bagian 3 dari 3 • Baru!</span>
+                    <h2 class="heading-font text-2xl md:text-3xl font-bold text-slate-800 mt-1">Kuis Listening "Dengar & Tebak"</h2>
+                </div>
+                <div class="bg-sky-100 border border-sky-300 rounded-2xl px-4 py-2 flex items-center gap-2">
+                    <i class="fa-solid fa-headphones text-sky-600 text-xl"></i>
+                    <span class="heading-font font-bold text-sky-900 text-base" id="listening-question-number">Soal 1 / 5</span>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-b from-sky-50 to-indigo-50 border-2 border-sky-200 rounded-3xl p-6 mb-6 text-center shadow-inner">
+                <p class="text-xs font-extrabold text-sky-700 uppercase tracking-widest mb-3">Tekan Tombol Audio & Dengarkan Kata Hewan:</p>
+                
+                <button onclick="playListeningAudio()" class="w-24 h-24 bg-gradient-to-tr from-sky-400 to-indigo-500 hover:scale-105 active:scale-95 text-white rounded-3xl flex flex-col items-center justify-center mx-auto mb-4 shadow-lg transition bounce-btn border-b-4 border-indigo-700 cursor-pointer">
+                    <i class="fa-solid fa-volume-high text-4xl mb-1"></i>
+                    <span class="text-[10px] font-extrabold tracking-wider">PLAY AUDIO</span>
+                </button>
+
+                <p class="text-xs font-bold text-slate-600">Pilihlah gambar hewan yang sesuai dengan suara kata di atas!</p>
+            </div>
+
+            <!-- 4 Picture Options for Listening -->
+            <div id="listening-options-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div id="listening-feedback-box" class="hidden p-4 rounded-2xl mb-6 text-center font-extrabold text-sm border-2"></div>
+
+            <div class="flex justify-between items-center pt-4 border-t-2 border-slate-100">
+                <button id="btn-prev-listening" onclick="navigateListening(-1)" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-extrabold text-sm rounded-2xl transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-chevron-left"></i> Sebelum
+                </button>
+                <button id="btn-next-listening" onclick="navigateListening(1)" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:opacity-95 text-white heading-font text-base rounded-2xl shadow-md transition flex items-center gap-2 cursor-pointer border-b-4 border-emerald-700">
+                    <span>Berikutnya</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN: RESULTS & CERTIFICATE -->
+        <div id="screen-results" class="hidden bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border-4 border-amber-300 text-center max-w-xl mx-auto w-full">
+            <div class="w-24 h-24 rounded-full bg-amber-100 text-amber-500 text-6xl flex items-center justify-center mx-auto mb-3 shadow-sm animate-bounce">
+                🏆
+            </div>
+
+            <h2 class="heading-font text-3xl md:text-4xl font-bold text-slate-800 mb-1">Hasil Belajar Siswa</h2>
+            <p class="text-sm font-extrabold text-slate-500 mb-6" id="result-student-info">Siswa: - | Kelas: -</p>
+
+            <!-- Score Display Box -->
+            <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-3xl mb-6 shadow-xl relative overflow-hidden border-2 border-amber-400">
+                <div class="text-xs uppercase tracking-widest font-extrabold text-amber-400 mb-1">Total Nilai Akhir</div>
+                <div class="heading-font text-6xl md:text-7xl font-bold text-amber-300 my-2" id="final-score-display">0</div>
+                <div class="text-xs text-slate-300 font-bold">Skala Nilai 0 - 100</div>
+
+                <div class="mt-4 pt-4 border-t border-slate-700/80 grid grid-cols-3 gap-2 text-[11px]">
+                    <div class="bg-slate-800/90 p-2.5 rounded-2xl">
+                        <span class="text-slate-400 block mb-0.5">Part 1 (Matching)</span>
+                        <span class="font-extrabold text-emerald-400 text-sm" id="score-breakdown-p1">0 / 25</span>
+                    </div>
+                    <div class="bg-slate-800/90 p-2.5 rounded-2xl">
+                        <span class="text-slate-400 block mb-0.5">Part 2 (Spelling)</span>
+                        <span class="font-extrabold text-purple-400 text-sm" id="score-breakdown-p2">0 / 50</span>
+                    </div>
+                    <div class="bg-slate-800/90 p-2.5 rounded-2xl">
+                        <span class="text-slate-400 block mb-0.5">Part 3 (Listening)</span>
+                        <span class="font-extrabold text-sky-400 text-sm" id="score-breakdown-p3">0 / 25</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="compliment-box" class="p-5 rounded-2xl mb-6 border-2 text-left space-y-1">
+                <div class="flex items-center gap-2 font-extrabold text-lg md:text-xl" id="compliment-english">
+                    <!-- Dynamic English Compliment -->
+                </div>
+                <div class="text-sm font-extrabold text-slate-600 pl-8" id="compliment-indonesian">
+                    <!-- Dynamic Translation -->
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-3">
+                <button onclick="openCertificateModal()" id="btn-view-certificate" class="w-full py-3.5 bg-gradient-to-r from-amber-400 to-orange-400 hover:opacity-95 text-slate-900 font-extrabold text-base rounded-2xl shadow-md transition bounce-btn flex items-center justify-center gap-2 border-b-4 border-amber-600 cursor-pointer">
+                    <i class="fa-solid fa-award text-xl text-amber-900"></i>
+                    <span>Cetak / Lihat Sertifikat Kelulusan</span>
+                </button>
+
+                <a id="btn-wa-confirm" target="_blank" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-base rounded-2xl shadow-lg shadow-emerald-200 transition bounce-btn flex items-center justify-center gap-3 cursor-pointer border-b-4 border-emerald-700">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    <span>Kirim Hasil ke WhatsApp Guru (085357959694)</span>
+                </a>
+
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <button onclick="restartGame()" class="py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-sm rounded-2xl transition flex items-center justify-center gap-2 cursor-pointer border border-slate-300">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Main Lagi</span>
+                    </button>
+                    <button onclick="promptTeacherPin()" class="py-3.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold text-sm rounded-2xl transition flex items-center justify-center gap-2 cursor-pointer border border-indigo-200">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Portal Guru</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL: MODE BELAJAR (FLASHCARDS) -->
+    <div id="modal-flashcards" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border-4 border-amber-300 text-center relative overflow-hidden">
+            <button onclick="closeFlashcardModal()" class="absolute top-4 right-4 w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <span class="px-3 py-1 bg-amber-100 text-amber-800 font-extrabold text-xs rounded-full uppercase tracking-wider">Mode Belajar Vocabulary</span>
+            <h3 class="heading-font text-2xl font-bold text-slate-800 mt-2 mb-4">Kartu Belajar Hewan (Animals)</h3>
+
+            <!-- Card Content -->
+            <div id="flashcard-box" class="p-8 rounded-3xl border-4 border-amber-200 bg-gradient-to-b from-amber-50 to-orange-50 shadow-inner mb-6 relative">
+                <div id="flashcard-emoji" class="text-8xl mb-3 transform hover:scale-110 transition cursor-pointer" onclick="speakCurrentFlashcard()">
+                    🐔
+                </div>
+                <div class="flex items-center justify-center gap-3">
+                    <h4 id="flashcard-english" class="heading-font text-4xl font-extrabold text-slate-800 capitalize">Chicken</h4>
+                    <button onclick="speakCurrentFlashcard()" class="w-10 h-10 bg-amber-400 hover:bg-amber-500 text-white rounded-2xl flex items-center justify-center transition shadow-md">
+                        <i class="fa-solid fa-volume-high text-xl"></i>
+                    </button>
+                </div>
+                <p id="flashcard-indonesian" class="text-lg font-extrabold text-amber-700 mt-2">Artinya: Ayam</p>
+                <p id="flashcard-spelling" class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">C - H - I - C - K - E - N</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex justify-between items-center">
+                <button onclick="prevFlashcard()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs rounded-xl flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> Sebelum
+                </button>
+                <span id="flashcard-counter" class="heading-font font-bold text-slate-600 text-sm">1 / 7</span>
+                <button onclick="nextFlashcard()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl flex items-center gap-2 shadow-sm">
+                    <span>Berikutnya</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CERTIFICATE -->
+    <div id="modal-certificate" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border-8 border-amber-300 relative text-center">
+            <button onclick="closeCertificateModal()" class="absolute top-4 right-4 w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div id="printable-certificate" class="p-6 border-4 border-dashed border-amber-400 rounded-2xl bg-gradient-to-b from-amber-50/50 to-yellow-50/50">
+                <div class="text-4xl mb-2">🏆 CERTIFICATE OF ACHIEVEMENT 🏆</div>
+                <h3 class="heading-font text-2xl md:text-3xl font-bold text-slate-800 my-2">Sertifikat Kelulusan Belajar</h3>
+                <p class="text-xs font-extrabold text-slate-500 uppercase tracking-widest mb-4">Bahasa Inggris "Animals" - Kelas 1 SD</p>
+                
+                <p class="text-sm font-bold text-slate-600">Diberikan Kepada:</p>
+                <div class="heading-font text-3xl font-bold text-indigo-900 my-2 underline decoration-amber-400 underline-offset-4" id="cert-student-name">Nama Siswa</div>
+                <p class="text-xs font-extrabold text-indigo-600 mb-4" id="cert-student-class">Kelas: 1A</p>
+
+                <p class="text-xs md:text-sm text-slate-700 max-w-md mx-auto mb-6 leading-relaxed">
+                    Telah menyelesaikan semua tantangan game kosakata hewan Bahasa Inggris dengan 
+                    Nilai Akhir: <strong class="text-amber-600 text-lg" id="cert-student-score">100 / 100</strong>.
+                </p>
+
+                <div class="flex justify-between items-end pt-4 border-t-2 border-amber-200 text-left text-xs text-slate-600">
+                    <div>
+                        <p class="font-extrabold">Guru Pengampu:</p>
+                        <p class="text-slate-500">Tim Bahasa Inggris Kelas 1 SD</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-extrabold">Tanggal:</p>
+                        <p id="cert-date" class="text-slate-500">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-center gap-3">
+                <button onclick="window.print()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs md:text-sm rounded-2xl shadow-md transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-print text-base"></i>
+                    <span>Cetak / Simpan PDF</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: PIN TEACHER -->
+    <div id="modal-pin" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border-4 border-indigo-200 text-center">
+            <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-3">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="heading-font text-2xl font-bold text-slate-800 mb-1">Akses Portal Guru</h3>
+            <p class="text-xs text-slate-500 font-bold mb-4">Masukkan PIN Guru (PIN: <strong>1234</strong> atau <strong>guru123</strong>):</p>
+
+            <form onsubmit="verifyTeacherPin(event)" class="space-y-4">
+                <input type="password" id="input-teacher-pin" required placeholder="Ketik PIN..." 
+                    class="w-full text-center tracking-widest py-3.5 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none font-bold text-xl bg-slate-50">
+                <p id="pin-error-text" class="text-xs text-rose-500 font-extrabold hidden">PIN salah! Silakan coba lagi.</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" onclick="closePinModal()" class="py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-extrabold text-xs rounded-xl">Batal</button>
+                    <button type="submit" class="py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl">Buka Portal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: TEACHER DASHBOARD -->
+    <div id="modal-teacher" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border-4 border-indigo-200">
+            <!-- Modal Header -->
+            <div class="p-5 bg-indigo-900 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-700 flex items-center justify-center text-amber-400 text-xl">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h3 class="heading-font text-xl font-bold">Portal Asesmen Guru</h3>
+                        <p class="text-xs text-indigo-200">Rekapitulasi Nilai Bahasa Inggris "Animals" Kelas 1 SD</p>
+                    </div>
+                </div>
+                <button onclick="closeTeacherModal()" class="w-9 h-9 rounded-full bg-indigo-800 hover:bg-indigo-700 text-indigo-200 flex items-center justify-center transition cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-5 overflow-y-auto flex-grow space-y-4">
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-purple-50 p-3.5 rounded-2xl border border-purple-200">
+                        <div class="text-[10px] text-purple-700 font-bold uppercase">Total Siswa</div>
+                        <div class="heading-font text-2xl font-bold text-purple-900" id="stat-total-students">0</div>
+                    </div>
+                    <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-200">
+                        <div class="text-[10px] text-emerald-700 font-bold uppercase">Rata-Rata Kelas 1A</div>
+                        <div class="heading-font text-2xl font-bold text-emerald-900" id="stat-avg-1a">0</div>
+                    </div>
+                    <div class="bg-purple-50 p-3.5 rounded-2xl border border-purple-200">
+                        <div class="text-[10px] text-purple-700 font-bold uppercase">Rata-Rata Kelas 1B</div>
+                        <div class="heading-font text-2xl font-bold text-purple-900" id="stat-avg-1b">0</div>
+                    </div>
+                    <div class="bg-amber-50 p-3.5 rounded-2xl border border-amber-200">
+                        <div class="text-[10px] text-amber-700 font-bold uppercase">Rata-Rata Total</div>
+                        <div class="heading-font text-2xl font-bold text-amber-900" id="stat-avg-total">0</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-between items-center gap-3 pt-2">
+                    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                        <div class="relative flex-grow md:flex-grow-0">
+                            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="teacher-search-input" onkeyup="renderTeacherRecords()" placeholder="Cari nama siswa..." 
+                                class="pl-8 pr-3 py-2 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 w-full focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <select id="teacher-filter-class" onchange="renderTeacherRecords()" class="px-3 py-2 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 focus:outline-none cursor-pointer">
+                            <option value="ALL">Semua Kelas</option>
+                            <option value="1A">Kelas 1A</option>
+                            <option value="1B">Kelas 1B</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportToCSV()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold rounded-xl transition flex items-center gap-2 shadow-xs cursor-pointer">
+                            <i class="fa-solid fa-file-excel text-sm"></i> Ekspor CSV
+                        </button>
+                        <button onclick="clearAllDataPrompt()" class="px-3.5 py-2 bg-rose-100 hover:bg-rose-200 text-rose-700 text-xs font-extrabold rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-trash"></i> Hapus Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 font-extrabold border-b border-slate-200">
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">Nama Siswa</th>
+                                    <th class="p-3">Kelas</th>
+                                    <th class="p-3 text-center">Part 1</th>
+                                    <th class="p-3 text-center">Part 2</th>
+                                    <th class="p-3 text-center">Part 3</th>
+                                    <th class="p-3 text-center">Total Skor</th>
+                                    <th class="p-3">Pujian Guru</th>
+                                    <th class="p-3">Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacher-table-body" class="divide-y divide-slate-100 font-bold text-slate-700">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="max-w-4xl mx-auto w-full mt-6 text-center text-xs text-slate-500 font-bold">
+        <p>© Bahasa Inggris Kelas 1 SD • Fun Animals Vocabulary Game v2.0</p>
+    </footer>
+
+    <script>
+        /* WEB AUDIO API & SPEECH SYNTHESIS */
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function speakText(text, lang = 'en-US') {
+            if (!soundEnabled) return;
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop any ongoing speech
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.85; // Slightly slower for grade 1 kids
+                utterance.pitch = 1.1; // Friendly pitch
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            if (soundEnabled) {
+                icon.className = "fa-solid fa-volume-high text-lg";
+                playSound('correct');
+            } else {
+                icon.className = "fa-solid fa-volume-xmark text-lg";
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            }
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                const now = audioCtx.currentTime;
+
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.15);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.setValueAtTime(150, now + 0.2);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'click') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, now);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === 'fanfare') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const noteOsc = audioCtx.createOscillator();
+                        const noteGain = audioCtx.createGain();
+                        noteOsc.connect(noteGain);
+                        noteGain.connect(audioCtx.destination);
+                        noteOsc.type = 'triangle';
+                        noteOsc.frequency.setValueAtTime(freq, now + idx * 0.12);
+                        noteGain.gain.setValueAtTime(0.2, now + idx * 0.12);
+                        noteGain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.3);
+                        noteOsc.start(now + idx * 0.12);
+                        noteOsc.stop(now + idx * 0.12 + 0.3);
+                    });
+                }
+            } catch (e) {
+                console.log("Audio exception", e);
+            }
+        }
+
+        const animalDataset = [
+            { id: 'a1', en: 'chicken', idn: 'Ayam', emoji: '🐔', spelling: 'C - H - I - C - K - E - N' },
+            { id: 'a2', en: 'dog', idn: 'Anjing', emoji: '🐶', spelling: 'D - O - G' },
+            { id: 'a3', en: 'cat', idn: 'Kucing', emoji: '🐱', spelling: 'C - A - T' },
+            { id: 'a4', en: 'duck', idn: 'Bebek', emoji: '🦆', spelling: 'D - U - C - K' },
+            { id: 'a5', en: 'cow', idn: 'Sapi', emoji: '🐮', spelling: 'C - O - W' },
+            { id: 'a6', en: 'goat', idn: 'Kambing', emoji: '🐐', spelling: 'G - O - A - T' },
+            { id: 'a7', en: 'bird', idn: 'Burung', emoji: '🐦', spelling: 'B - I - R - D' }
+        ];
+
+        /* PART 2: SPELLING QUESTIONS */
+        const quizQuestions = [
+            { num: 1, animalId: 'a1', displayWord: 'CH _ C K E N', missingLetter: 'I', options: ['I', 'O', 'E', 'A'] },
+            { num: 2, animalId: 'a2', displayWord: 'D _ G', missingLetter: 'O', options: ['O', 'A', 'U', 'I'] },
+            { num: 3, animalId: 'a3', displayWord: 'C _ T', missingLetter: 'A', options: ['A', 'O', 'E', 'I'] },
+            { num: 4, animalId: 'a4', displayWord: 'D _ C K', missingLetter: 'U', options: ['U', 'O', 'A', 'E'] },
+            { num: 5, animalId: 'a5', displayWord: 'C _ W', missingLetter: 'O', options: ['O', 'A', 'E', 'U'] },
+            { num: 6, animalId: 'a6', displayWord: 'G _ A T', missingLetter: 'O', options: ['O', 'U', 'A', 'I'] },
+            { num: 7, animalId: 'a7', displayWord: 'B _ R D', missingLetter: 'I', options: ['I', 'E', 'O', 'A'] },
+            { num: 8, animalId: 'a1', displayWord: 'C H I C K _ N', missingLetter: 'E', options: ['E', 'A', 'I', 'O'] },
+            { num: 9, animalId: 'a4', displayWord: 'D U C _', missingLetter: 'K', options: ['K', 'C', 'G', 'T'] },
+            { num: 10, animalId: 'a6', displayWord: 'G O A _', missingLetter: 'T', options: ['T', 'D', 'K', 'P'] }
+        ];
+
+        /* PART 3: LISTENING QUESTIONS */
+        const listeningQuestions = [
+            { num: 1, animalId: 'a3', targetWord: 'cat', options: ['a3', 'a2', 'a1', 'a5'] },
+            { num: 2, animalId: 'a1', targetWord: 'chicken', options: ['a1', 'a4', 'a6', 'a7'] },
+            { num: 3, animalId: 'a5', targetWord: 'cow', options: ['a5', 'a6', 'a2', 'a3'] },
+            { num: 4, animalId: 'a4', targetWord: 'duck', options: ['a4', 'a1', 'a7', 'a2'] },
+            { num: 5, animalId: 'a7', targetWord: 'bird', options: ['a7', 'a3', 'a5', 'a6'] }
+        ];
+
+        /* STATE VARIABLES */
+        let studentData = {
+            name: '',
+            class: '1A',
+            part1Score: 0,
+            part2Score: 0,
+            part3Score: 0,
+            totalScore: 0,
+            date: ''
+        };
+
+        let selectedWordId = null;
+        let selectedPictureId = null;
+        let matchedAnimalIds = [];
+
+        let currentQuizIndex = 0;
+        let userQuizAnswers = new Array(quizQuestions.length).fill(null);
+
+        let currentListeningIndex = 0;
+        let userListeningAnswers = new Array(listeningQuestions.length).fill(null);
+
+        let flashcardIndex = 0;
+
+        function openFlashcardModal() {
+            flashcardIndex = 0;
+            renderFlashcard();
+            document.getElementById('modal-flashcards').classList.remove('hidden');
+        }
+
+        function closeFlashcardModal() {
+            document.getElementById('modal-flashcards').classList.add('hidden');
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        }
+
+        function renderFlashcard() {
+            const animal = animalDataset[flashcardIndex];
+            document.getElementById('flashcard-emoji').textContent = animal.emoji;
+            document.getElementById('flashcard-english').textContent = animal.en;
+            document.getElementById('flashcard-indonesian').textContent = `Artinya: ${animal.idn}`;
+            document.getElementById('flashcard-spelling').textContent = animal.spelling;
+            document.getElementById('flashcard-counter').textContent = `${flashcardIndex + 1} / ${animalDataset.length}`;
+            speakCurrentFlashcard();
+        }
+
+        function speakCurrentFlashcard() {
+            const animal = animalDataset[flashcardIndex];
+            speakText(animal.en);
+        }
+
+        function nextFlashcard() {
+            if (flashcardIndex < animalDataset.length - 1) {
+                flashcardIndex++;
+                renderFlashcard();
+            } else {
+                flashcardIndex = 0;
+                renderFlashcard();
+            }
+        }
+
+        function prevFlashcard() {
+            if (flashcardIndex > 0) {
+                flashcardIndex--;
+                renderFlashcard();
+            }
+        }
+
+        function goHome() {
+            document.getElementById('screen-matching').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-listening').classList.add('hidden');
+            document.getElementById('screen-results').classList.add('hidden');
+            document.getElementById('screen-register').classList.remove('hidden');
+        }
+
+        function startGame(e) {
+            e.preventDefault();
+            initAudio();
+            playSound('click');
+
+            const nameInput = document.getElementById('input-student-name').value.trim();
+            const classInput = document.querySelector('input[name="student_class"]:checked').value;
+
+            if (!nameInput) return;
+
+            studentData.name = nameInput;
+            studentData.class = classInput;
+            studentData.date = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+
+            document.getElementById('screen-register').classList.add('hidden');
+            document.getElementById('screen-matching').classList.remove('hidden');
+
+            matchedAnimalIds = [];
+            selectedWordId = null;
+            selectedPictureId = null;
+            renderPart1Matching();
+            updatePart1ScoreUI();
+        }
+
+        function renderPart1Matching() {
+            const wordsContainer = document.getElementById('words-container');
+            const picturesContainer = document.getElementById('pictures-container');
+
+            wordsContainer.innerHTML = '';
+            picturesContainer.innerHTML = '';
+
+            const shuffledWords = [...animalDataset].sort(() => Math.random() - 0.5);
+            const shuffledPictures = [...animalDataset].sort(() => Math.random() - 0.5);
+
+            shuffledWords.forEach(item => {
+                const isMatched = matchedAnimalIds.includes(item.id);
+                const btn = document.createElement('button');
+                btn.id = `word-btn-${item.id}`;
+                btn.onclick = () => selectWord(item.id);
+                btn.className = `w-full p-3.5 md:p-4 rounded-2xl border-2 font-extrabold text-base md:text-lg flex items-center justify-between transition cursor-pointer ${
+                    isMatched 
+                        ? 'bg-emerald-100 border-emerald-400 text-emerald-800 opacity-80 cursor-default'
+                        : 'bg-white border-slate-200 hover:border-amber-400 text-slate-800 shadow-2xs'
+                }`;
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <button onclick="event.stopPropagation(); speakText('${item.en}')" class="w-8 h-8 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-700 flex items-center justify-center text-xs transition">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                        <span class="capitalize">${item.en}</span>
+                    </div>
+                    <i class="${isMatched ? 'fa-solid fa-circle-check text-emerald-600 text-xl' : 'fa-regular fa-circle text-slate-300 text-lg'}"></i>
+                `;
+                wordsContainer.appendChild(btn);
+            });
+
+            shuffledPictures.forEach(item => {
+                const isMatched = matchedAnimalIds.includes(item.id);
+                const btn = document.createElement('button');
+                btn.id = `pic-btn-${item.id}`;
+                btn.onclick = () => selectPicture(item.id);
+                btn.className = `p-4 rounded-2xl border-2 flex flex-col items-center justify-center transition cursor-pointer ${
+                    isMatched 
+                        ? 'bg-emerald-100 border-emerald-400 text-emerald-800 opacity-80 cursor-default'
+                        : 'bg-white border-slate-200 hover:border-emerald-400 text-slate-800 shadow-2xs'
+                }`;
+                btn.innerHTML = `
+                    <div class="text-5xl my-1 transform hover:scale-110 transition">${item.emoji}</div>
+                    <div class="text-xs font-extrabold text-slate-600 mt-1">${item.idn}</div>
+                    <i class="${isMatched ? 'fa-solid fa-circle-check text-emerald-600 mt-2 text-lg' : 'fa-regular fa-circle text-slate-300 mt-2 text-base'}"></i>
+                `;
+                picturesContainer.appendChild(btn);
+            });
+        }
+
+        function selectWord(id) {
+            if (matchedAnimalIds.includes(id)) return;
+            playSound('click');
+            selectedWordId = id;
+
+            const animal = animalDataset.find(a => a.id === id);
+            if (animal) speakText(animal.en);
+
+            animalDataset.forEach(item => {
+                if (!matchedAnimalIds.includes(item.id)) {
+                    const el = document.getElementById(`word-btn-${item.id}`);
+                    if (el) {
+                        if (item.id === id) {
+                            el.className = "w-full p-3.5 md:p-4 rounded-2xl border-2 font-extrabold text-base md:text-lg flex items-center justify-between transition cursor-pointer bg-amber-100 border-amber-500 text-amber-900 shadow-md ring-2 ring-amber-300";
+                        } else {
+                            el.className = "w-full p-3.5 md:p-4 rounded-2xl border-2 font-extrabold text-base md:text-lg flex items-center justify-between transition cursor-pointer bg-white border-slate-200 hover:border-amber-400 text-slate-800 shadow-2xs";
+                        }
+                    }
+                }
+            });
+
+            checkMatchPair();
+        }
+
+        function selectPicture(id) {
+            if (matchedAnimalIds.includes(id)) return;
+            playSound('click');
+            selectedPictureId = id;
+
+            animalDataset.forEach(item => {
+                if (!matchedAnimalIds.includes(item.id)) {
+                    const el = document.getElementById(`pic-btn-${item.id}`);
+                    if (el) {
+                        if (item.id === id) {
+                            el.className = "p-4 rounded-2xl border-2 flex flex-col items-center justify-center transition cursor-pointer bg-emerald-100 border-emerald-500 text-emerald-900 shadow-md ring-2 ring-emerald-300";
+                        } else {
+                            el.className = "p-4 rounded-2xl border-2 flex flex-col items-center justify-center transition cursor-pointer bg-white border-slate-200 hover:border-emerald-400 text-slate-800 shadow-2xs";
+                        }
+                    }
+                }
+            });
+
+            checkMatchPair();
+        }
+
+        function checkMatchPair() {
+            if (selectedWordId && selectedPictureId) {
+                const wordEl = document.getElementById(`word-btn-${selectedWordId}`);
+                const picEl = document.getElementById(`pic-btn-${selectedPictureId}`);
+
+                if (selectedWordId === selectedPictureId) {
+                    playSound('correct');
+                    matchedAnimalIds.push(selectedWordId);
+
+                    wordEl.className = "w-full p-3.5 md:p-4 rounded-2xl border-2 font-extrabold text-base md:text-lg flex items-center justify-between transition bg-emerald-100 border-emerald-500 text-emerald-900 opacity-90";
+                    wordEl.querySelector('i').className = "fa-solid fa-circle-check text-emerald-600 text-xl";
+
+                    picEl.className = "p-4 rounded-2xl border-2 flex flex-col items-center justify-center transition bg-emerald-100 border-emerald-500 text-emerald-900 opacity-90";
+                    picEl.querySelector('i').className = "fa-solid fa-circle-check text-emerald-600 mt-2 text-lg";
+
+                    selectedWordId = null;
+                    selectedPictureId = null;
+                    updatePart1ScoreUI();
+                } else {
+                    playSound('wrong');
+                    if (wordEl) wordEl.classList.add('shake-animation');
+                    if (picEl) picEl.classList.add('shake-animation');
+
+                    const resetWord = selectedWordId;
+                    const resetPic = selectedPictureId;
+
+                    selectedWordId = null;
+                    selectedPictureId = null;
+
+                    setTimeout(() => {
+                        if (resetWord && !matchedAnimalIds.includes(resetWord)) {
+                            const w = document.getElementById(`word-btn-${resetWord}`);
+                            if (w) {
+                                w.classList.remove('shake-animation');
+                                w.className = "w-full p-3.5 md:p-4 rounded-2xl border-2 font-extrabold text-base md:text-lg flex items-center justify-between transition cursor-pointer bg-white border-slate-200 text-slate-800 shadow-2xs";
+                            }
+                        }
+                        if (resetPic && !matchedAnimalIds.includes(resetPic)) {
+                            const p = document.getElementById(`pic-btn-${resetPic}`);
+                            if (p) {
+                                p.classList.remove('shake-animation');
+                                p.className = "p-4 rounded-2xl border-2 flex flex-col items-center justify-center transition cursor-pointer bg-white border-slate-200 text-slate-800 shadow-2xs";
+                            }
+                        }
+                    }, 600);
+                }
+            }
+        }
+
+        function updatePart1ScoreUI() {
+            // 7 animals, 3.57 pts each = 25 max
+            studentData.part1Score = Math.round((matchedAnimalIds.length / 7) * 25);
+            document.getElementById('match-score-text').textContent = `${studentData.part1Score} / 25`;
+
+            const btnNext = document.getElementById('btn-next-to-part2');
+            const statusText = document.getElementById('match-status-text');
+
+            if (matchedAnimalIds.length === 7) {
+                btnNext.disabled = false;
+                btnNext.className = "w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-extrabold text-sm rounded-2xl shadow-lg transition bounce-btn flex items-center justify-center gap-2 cursor-pointer border-b-4 border-emerald-700";
+                statusText.innerHTML = `<span class="text-emerald-600 font-extrabold"><i class="fa-solid fa-circle-check mr-1"></i> Hebat! Semua gambar sudah cocok. Klik untuk lanjut!</span>`;
+            } else {
+                btnNext.disabled = true;
+                btnNext.className = "w-full sm:w-auto px-6 py-3 bg-slate-200 text-slate-400 font-extrabold text-sm rounded-2xl transition cursor-not-allowed flex items-center justify-center gap-2";
+                statusText.textContent = `Terpasang: ${matchedAnimalIds.length} dari 7 hewan`;
+            }
+        }
+
+        function startPart2Quiz() {
+            playSound('click');
+            document.getElementById('screen-matching').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            currentQuizIndex = 0;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            const animal = animalDataset.find(a => a.id === q.animalId);
+
+            document.getElementById('quiz-question-number').textContent = `Soal ${q.num} / ${quizQuestions.length}`;
+            
+            const pct = ((currentQuizIndex + 1) / quizQuestions.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${pct}%`;
+
+            const animalCard = document.getElementById('quiz-animal-card');
+            animalCard.textContent = animal.emoji;
+
+            document.getElementById('quiz-word-display').textContent = q.displayWord;
+            document.getElementById('quiz-hint-text').textContent = `Hewan: ${animal.idn} (${animal.en})`;
+
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            feedbackBox.classList.add('hidden');
+
+            const optionsContainer = document.getElementById('quiz-options-container');
+            optionsContainer.innerHTML = '';
+
+            const currentAnswer = userQuizAnswers[currentQuizIndex];
+
+            q.options.forEach(letter => {
+                const isSelected = currentAnswer === letter;
+                const btn = document.createElement('button');
+                btn.onclick = () => selectQuizAnswer(letter);
+                btn.className = `p-5 rounded-3xl border-4 text-3xl md:text-4xl heading-font font-extrabold transition bounce-btn cursor-pointer ${
+                    isSelected 
+                        ? 'bg-purple-500 border-purple-700 text-white shadow-lg ring-4 ring-purple-200'
+                        : 'bg-white border-slate-200 hover:border-purple-300 text-slate-800 shadow-md'
+                }`;
+                btn.textContent = letter;
+                optionsContainer.appendChild(btn);
+            });
+
+            if (currentAnswer !== null) {
+                showQuizFeedback(currentAnswer === q.missingLetter, q.missingLetter);
+            }
+
+            document.getElementById('btn-prev-question').style.visibility = currentQuizIndex === 0 ? 'hidden' : 'visible';
+
+            const btnNext = document.getElementById('btn-next-question');
+            btnNext.innerHTML = `<span>Lanjut ke Listening</span> <i class="fa-solid fa-chevron-right"></i>`;
+            btnNext.className = "px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white heading-font text-base rounded-2xl shadow-md transition flex items-center gap-2 cursor-pointer border-b-4 border-purple-700";
+        }
+
+        function speakAnimalWord() {
+            const q = quizQuestions[currentQuizIndex];
+            const animal = animalDataset.find(a => a.id === q.animalId);
+            speakText(animal.en);
+        }
+
+        function selectQuizAnswer(letter) {
+            userQuizAnswers[currentQuizIndex] = letter;
+            const q = quizQuestions[currentQuizIndex];
+            const isCorrect = letter === q.missingLetter;
+
+            if (isCorrect) playSound('correct');
+            else playSound('wrong');
+
+            renderQuizQuestion();
+            showQuizFeedback(isCorrect, q.missingLetter);
+        }
+
+        function showQuizFeedback(isCorrect, correctLetter) {
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            feedbackBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                feedbackBox.className = "p-4 rounded-2xl mb-6 text-center font-extrabold text-sm border-2 border-emerald-400 bg-emerald-50 text-emerald-900";
+                feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 text-xl mr-2"></i> Pintar Sekali! Huruf '${correctLetter}' tepat!`;
+            } else {
+                feedbackBox.className = "p-4 rounded-2xl mb-6 text-center font-extrabold text-sm border-2 border-rose-400 bg-rose-50 text-rose-900";
+                feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 text-xl mr-2"></i> Belum Tepat. Huruf yang benar adalah '${correctLetter}'.`;
+            }
+        }
+
+        function navigateQuiz(dir) {
+            if (dir === 1) {
+                if (userQuizAnswers[currentQuizIndex] === null) {
+                    showCustomToast("Pilih salah satu huruf jawaban dulu ya!");
+                    return;
+                }
+                if (currentQuizIndex < quizQuestions.length - 1) {
+                    currentQuizIndex++;
+                    renderQuizQuestion();
+                } else {
+                    startPart3Listening();
+                }
+            } else if (dir === -1) {
+                if (currentQuizIndex > 0) {
+                    currentQuizIndex--;
+                    renderQuizQuestion();
+                }
+            }
+        }
+
+        /* PART 3: LISTENING LOGIC */
+        function startPart3Listening() {
+            playSound('click');
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-listening').classList.remove('hidden');
+            currentListeningIndex = 0;
+            renderListeningQuestion();
+        }
+
+        function renderListeningQuestion() {
+            const q = listeningQuestions[currentListeningIndex];
+            document.getElementById('listening-question-number').textContent = `Soal ${q.num} / ${listeningQuestions.length}`;
+
+            const optionsContainer = document.getElementById('listening-options-container');
+            optionsContainer.innerHTML = '';
+
+            const currentAnswer = userListeningAnswers[currentListeningIndex];
+
+            q.options.forEach(animId => {
+                const item = animalDataset.find(a => a.id === animId);
+                const isSelected = currentAnswer === animId;
+
+                const btn = document.createElement('button');
+                btn.onclick = () => selectListeningAnswer(animId);
+                btn.className = `p-4 rounded-3xl border-4 flex flex-col items-center justify-center transition bounce-btn cursor-pointer ${
+                    isSelected 
+                        ? 'bg-sky-500 border-sky-700 text-white shadow-lg ring-4 ring-sky-200'
+                        : 'bg-white border-slate-200 hover:border-sky-300 text-slate-800 shadow-md'
+                }`;
+                btn.innerHTML = `
+                    <div class="text-6xl my-2">${item.emoji}</div>
+                    <div class="text-sm font-extrabold capitalize ${isSelected ? 'text-white' : 'text-slate-700'}">${item.idn}</div>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            const feedbackBox = document.getElementById('listening-feedback-box');
+            if (currentAnswer !== null) {
+                const isCorrect = currentAnswer === q.animalId;
+                feedbackBox.classList.remove('hidden');
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-2xl mb-6 text-center font-extrabold text-sm border-2 border-emerald-400 bg-emerald-50 text-emerald-900";
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 text-xl mr-2"></i> Jawabanmu Tepat Sekali!`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-2xl mb-6 text-center font-extrabold text-sm border-2 border-rose-400 bg-rose-50 text-rose-900";
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 text-xl mr-2"></i> Belum Tepat. Coba dengarkan lagi ya!`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            document.getElementById('btn-prev-listening').style.visibility = currentListeningIndex === 0 ? 'hidden' : 'visible';
+
+            const btnNext = document.getElementById('btn-next-listening');
+            if (currentListeningIndex === listeningQuestions.length - 1) {
+                btnNext.innerHTML = `<span>Selesai & Lihat Hasil</span> <i class="fa-solid fa-trophy"></i>`;
+            } else {
+                btnNext.innerHTML = `<span>Berikutnya</span> <i class="fa-solid fa-chevron-right"></i>`;
+            }
+
+            setTimeout(() => playListeningAudio(), 300);
+        }
+
+        function playListeningAudio() {
+            const q = listeningQuestions[currentListeningIndex];
+            speakText(q.targetWord);
+        }
+
+        function selectListeningAnswer(animId) {
+            userListeningAnswers[currentListeningIndex] = animId;
+            const q = listeningQuestions[currentListeningIndex];
+            const isCorrect = animId === q.animalId;
+
+            if (isCorrect) playSound('correct');
+            else playSound('wrong');
+
+            renderListeningQuestion();
+        }
+
+        function navigateListening(dir) {
+            if (dir === 1) {
+                if (userListeningAnswers[currentListeningIndex] === null) {
+                    showCustomToast("Pilih salah satu gambar jawaban dulu ya!");
+                    return;
+                }
+                if (currentListeningIndex < listeningQuestions.length - 1) {
+                    currentListeningIndex++;
+                    renderListeningQuestion();
+                } else {
+                    finishGameAndCalculate();
+                }
+            } else if (dir === -1) {
+                if (currentListeningIndex > 0) {
+                    currentListeningIndex--;
+                    renderListeningQuestion();
+                }
+            }
+        }
+
+        function finishGameAndCalculate() {
+            // Part 2 calculation (10 Qs = 50 pts max)
+            let quizCorrect = 0;
+            quizQuestions.forEach((q, idx) => {
+                if (userQuizAnswers[idx] === q.missingLetter) quizCorrect++;
+            });
+            studentData.part2Score = Math.round((quizCorrect / 10) * 50);
+
+            // Part 3 calculation (5 Qs = 25 pts max)
+            let listeningCorrect = 0;
+            listeningQuestions.forEach((q, idx) => {
+                if (userListeningAnswers[idx] === q.animalId) listeningCorrect++;
+            });
+            studentData.part3Score = Math.round((listeningCorrect / 5) * 25);
+
+            studentData.totalScore = studentData.part1Score + studentData.part2Score + studentData.part3Score;
+
+            saveStudentRecord(studentData);
+
+            document.getElementById('screen-listening').classList.add('hidden');
+            document.getElementById('screen-results').classList.remove('hidden');
+
+            document.getElementById('result-student-info').textContent = `Siswa: ${studentData.name} | Kelas: ${studentData.class}`;
+            document.getElementById('final-score-display').textContent = studentData.totalScore;
+            document.getElementById('score-breakdown-p1').textContent = `${studentData.part1Score} / 25`;
+            document.getElementById('score-breakdown-p2').textContent = `${studentData.part2Score} / 50`;
+            document.getElementById('score-breakdown-p3').textContent = `${studentData.part3Score} / 25`;
+
+            /* MANDATORY EXACT COMPLIMENT PHRASING & INDONESIAN TRANSLATIONS */
+            let compEng = "";
+            let compIndo = "";
+            let compBoxStyle = "";
+
+            if (studentData.totalScore >= 80) {
+                compEng = `<i class="fa-solid fa-award text-amber-500 text-2xl"></i> "Excellent! You're doing great!"`;
+                compIndo = `(Arti: Sangat bagus! Kamu luar biasa!)`;
+                compBoxStyle = "bg-amber-50 border-amber-300 text-amber-950";
+                playSound('fanfare');
+                triggerConfetti();
+            } else if (studentData.totalScore >= 60) {
+                compEng = `<i class="fa-solid fa-star text-blue-500 text-2xl"></i> "Wonderful! Let's try again!"`;
+                compIndo = `(Arti: Luar biasa! Ayo coba lagi!)`;
+                compBoxStyle = "bg-blue-50 border-blue-300 text-blue-950";
+                playSound('correct');
+                triggerConfetti();
+            } else {
+                compEng = `<i class="fa-solid fa-thumbs-up text-purple-500 text-2xl"></i> "Good job! Please try again!"`;
+                compIndo = `(Arti: Kerja bagus! Coba lagi ya!)`;
+                compBoxStyle = "bg-purple-50 border-purple-300 text-purple-950";
+                playSound('correct');
+            }
+
+            const box = document.getElementById('compliment-box');
+            box.className = `p-5 rounded-2xl mb-6 border-2 text-left space-y-1 ${compBoxStyle}`;
+            document.getElementById('compliment-english').innerHTML = compEng;
+            document.getElementById('compliment-indonesian').textContent = compIndo;
+
+            // WhatsApp Direct Link
+            const teacherWA = "085357959694";
+            const waClean = "62" + teacherWA.substring(1);
+
+            const waMessage = 
+`*KONFIRMASI HASIL BELAJAR BAHASA INGGRIS v2.0*
+---------------------------------------
+*Materi:* Animals (Kelas 1 SD)
+*Nama Siswa:* ${studentData.name}
+*Kelas:* ${studentData.class}
+*Tanggal:* ${studentData.date}
+
+*DETAIL SKOR:*
+- Bagian 1 (Matching Words): ${studentData.part1Score} / 25
+- Bagian 2 (Latihan Spelling): ${studentData.part2Score} / 50
+- Bagian 3 (Kuis Listening): ${studentData.part3Score} / 25
+*TOTAL NILAI:* ${studentData.totalScore} / 100
+
+*PUJIAN GURU:*
+${studentData.totalScore >= 80 ? "Excellent! You're doing great!" : studentData.totalScore >= 60 ? "Wonderful! Let's try again!" : "Good job! Please try again!"}
+
+Terima kasih Ibu/Bapak Guru!`;
+
+            const waUrl = `https://wa.me/${waClean}?text=${encodeURIComponent(waMessage)}`;
+            document.getElementById('btn-wa-confirm').href = waUrl;
+        }
+
+        function openCertificateModal() {
+            document.getElementById('cert-student-name').textContent = studentData.name || "Nama Siswa";
+            document.getElementById('cert-student-class').textContent = `Kelas: ${studentData.class || "1A"}`;
+            document.getElementById('cert-student-score').textContent = `${studentData.totalScore} / 100`;
+            document.getElementById('cert-date').textContent = studentData.date || new Date().toLocaleDateString('id-ID');
+            document.getElementById('modal-certificate').classList.remove('hidden');
+        }
+
+        function closeCertificateModal() {
+            document.getElementById('modal-certificate').classList.add('hidden');
+        }
+
+        function promptTeacherPin() {
+            document.getElementById('input-teacher-pin').value = '';
+            document.getElementById('pin-error-text').classList.add('hidden');
+            document.getElementById('modal-pin').classList.remove('hidden');
+        }
+
+        function closePinModal() {
+            document.getElementById('modal-pin').classList.add('hidden');
+        }
+
+        function verifyTeacherPin(e) {
+            e.preventDefault();
+            const pin = document.getElementById('input-teacher-pin').value.trim();
+            if (pin === '1234' || pin === 'guru123') {
+                closePinModal();
+                openTeacherModal();
+            } else {
+                document.getElementById('pin-error-text').classList.remove('hidden');
+            }
+        }
+
+        function saveStudentRecord(data) {
+            let records = JSON.parse(localStorage.getItem('english_animals_grade1_records') || '[]');
+            records.push({ ...data });
+            localStorage.setItem('english_animals_grade1_records', JSON.stringify(records));
+        }
+
+        function openTeacherModal() {
+            renderTeacherRecords();
+            document.getElementById('modal-teacher').classList.remove('hidden');
+        }
+
+        function closeTeacherModal() {
+            document.getElementById('modal-teacher').classList.add('hidden');
+        }
+
+        function renderTeacherRecords() {
+            const records = JSON.parse(localStorage.getItem('english_animals_grade1_records') || '[]');
+            const filterClass = document.getElementById('teacher-filter-class').value;
+            const searchText = document.getElementById('teacher-search-input').value.toLowerCase().trim();
+
+            let filtered = filterClass === 'ALL' ? records : records.filter(r => r.class === filterClass);
+
+            if (searchText) {
+                filtered = filtered.filter(r => r.name.toLowerCase().includes(searchText));
+            }
+
+            document.getElementById('stat-total-students').textContent = records.length;
+
+            const rec1A = records.filter(r => r.class === '1A');
+            const avg1A = rec1A.length ? Math.round(rec1A.reduce((s, r) => s + r.totalScore, 0) / rec1A.length) : 0;
+            document.getElementById('stat-avg-1a').textContent = avg1A;
+
+            const rec1B = records.filter(r => r.class === '1B');
+            const avg1B = rec1B.length ? Math.round(rec1B.reduce((s, r) => s + r.totalScore, 0) / rec1B.length) : 0;
+            document.getElementById('stat-avg-1b').textContent = avg1B;
+
+            const avgTotal = records.length ? Math.round(records.reduce((s, r) => s + r.totalScore, 0) / records.length) : 0;
+            document.getElementById('stat-avg-total').textContent = avgTotal;
+
+            const tbody = document.getElementById('teacher-table-body');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-6 text-center text-slate-400 italic font-bold">Belum ada data nilai siswa tersimpan.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filtered.forEach((r, idx) => {
+                let badge = "";
+                if (r.totalScore >= 80) {
+                    badge = `<span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-extrabold text-[10px]">Excellent!</span>`;
+                } else if (r.totalScore >= 60) {
+                    badge = `<span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-extrabold text-[10px]">Wonderful!</span>`;
+                } else {
+                    badge = `<span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-extrabold text-[10px]">Good job!</span>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 text-slate-400">${idx + 1}</td>
+                    <td class="p-3 font-extrabold text-slate-800">${r.name}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded-md font-extrabold text-[10px] ${r.class === '1A' ? 'bg-emerald-100 text-emerald-700' : 'bg-purple-100 text-purple-700'}">${r.class}</span></td>
+                    <td class="p-3 text-center text-slate-600">${r.part1Score || 0}</td>
+                    <td class="p-3 text-center text-slate-600">${r.part2Score || 0}</td>
+                    <td class="p-3 text-center text-slate-600">${r.part3Score || 0}</td>
+                    <td class="p-3 text-center"><span class="font-extrabold px-2.5 py-1 rounded-lg ${r.totalScore >= 80 ? 'bg-amber-100 text-amber-800' : r.totalScore >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-700'}">${r.totalScore}</span></td>
+                    <td class="p-3">${badge}</td>
+                    <td class="p-3 text-slate-500 text-[11px]">${r.date || '-'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function exportToCSV() {
+            const records = JSON.parse(localStorage.getItem('english_animals_grade1_records') || '[]');
+            if (records.length === 0) {
+                showCustomToast("Tidak ada data untuk diekspor!");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,No,Nama Siswa,Kelas,Skor Part 1,Skor Part 2,Skor Part 3,Total Nilai,Compliment,Waktu Pengerjaan\n";
+            records.forEach((r, idx) => {
+                const comp = r.totalScore >= 80 ? "Excellent! You're doing great!" : r.totalScore >= 60 ? "Wonderful! Let's try again!" : "Good job! Please try again!";
+                csvContent += `${idx + 1},"${r.name}",${r.class},${r.part1Score || 0},${r.part2Score || 0},${r.part3Score || 0},${r.totalScore},"${comp}","${r.date}"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Rekap_Asesmen_Animals_Kelas1SD_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearAllDataPrompt() {
+            if (confirm("Apakah Anda yakin ingin menghapus seluruh data asesmen siswa?")) {
+                localStorage.removeItem('english_animals_grade1_records');
+                renderTeacherRecords();
+                showCustomToast("Seluruh data telah dibersihkan!");
+            }
+        }
+
+        function showCustomToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl text-xs md:text-sm font-bold z-50 flex items-center gap-2 animate-bounce";
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-amber-400"></i> <span>${msg}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        function restartGame() {
+            playSound('click');
+            document.getElementById('screen-results').classList.add('hidden');
+            document.getElementById('screen-register').classList.remove('hidden');
+            document.getElementById('input-student-name').value = '';
+            userQuizAnswers = new Array(quizQuestions.length).fill(null);
+            userListeningAnswers = new Array(listeningQuestions.length).fill(null);
+        }
+
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pieces = [];
+            const numberOfPieces = 100;
+            const colors = ['#4ADE80', '#FACC15', '#FB923C', '#F472B6', '#38BDF8', '#C084FC'];
+
+            for (let i = 0; i < numberOfPieces; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 5 + 2,
+                    angle: Math.random() * 360
+                });
+            }
+
+            let animationFrame;
+            function updateConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.y += p.speed;
+                    p.angle += 3;
+                    if (p.y > canvas.height) {
+                        p.y = -10;
+                        p.x = Math.random() * canvas.width;
+                    }
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.angle * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+                animationFrame = requestAnimationFrame(updateConfetti);
+            }
+
+            updateConfetti();
+
+            setTimeout(() => {
+                cancelAnimationFrame(animationFrame);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
